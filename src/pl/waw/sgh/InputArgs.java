@@ -6,5 +6,7 @@ public class InputArgs {
         for (String arg : args) {
             System.out.println("Arg: " + arg);
         }
+
+
     }
 }
