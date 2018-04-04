@@ -1,0 +1,11 @@
+Please write a program that checks the Tick Tack Toe game table provided
+as input in form of a text (CSV) file (ticktacktoe.txt).
+The program should print if the game is over and if so who one (X,O or nobody).
+
+Hints:
+1. It will simplify code if you use 1 and -1 to represent the X and O respectively
+and 0 to represent an empty field.
+2. You may need to parse the values read from the file as text (String) into numbers.
+To do that use:
+String s = "55";
+int a = Integer.parseInt(s);
