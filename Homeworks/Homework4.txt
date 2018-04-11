@@ -1,0 +1,5 @@
+Please write a program that given a file or folder calculates:
+- the number of all files and folders (also in their subfolders)
+- the total size of all files and folders.
+
+Hint: Use recursion to implement the calculation on subfolders.
