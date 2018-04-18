@@ -11,7 +11,7 @@ public class Rectangle extends Shape {
         super(sideA, sideB);
     }
 
-
+    @Override
     public double calcSurface() {
         return parA*parB;
     }

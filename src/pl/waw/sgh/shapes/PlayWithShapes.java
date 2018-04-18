@@ -9,5 +9,13 @@ public class PlayWithShapes {
         System.out.println(r1.calcSurface());
         // calls toString automatically
         System.out.println(r1);
+
+        Circle c1 = new Circle(4);
+        System.out.println(c1);
+        System.out.println(c1.calcSurface());
+
+        // Impossible because Shape is abstract
+        //Shape s1 = new Shape(3,23);
+        //System.out.println(s1);
     }
 }
