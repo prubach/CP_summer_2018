@@ -2,8 +2,8 @@ package pl.waw.sgh.obj;
 
 public class Rectangle {
 
-    Double sideA = 0d;
-    Double sideB = 0d;
+    private Double sideA = 0d;
+    private Double sideB = 0d;
 
 /*    public Rectangle() {
         sideA = 5;
@@ -11,16 +11,19 @@ public class Rectangle {
     }*/
 
     public Rectangle(double sideA, double sideB) {
+        setParams(sideA, sideB);
+/*
         this.sideA = sideA;
         this.sideB = sideB;
+*/
     }
 
-    void setParams(double a, double b) {
+    public void setParams(double a, double b) {
         sideA = a;
         sideB = b;
     }
 
-    double calcSurface() {
+    public double calcSurface() {
         return sideA*sideB;
     }
 }
