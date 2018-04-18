@@ -15,4 +15,10 @@ public class Rectangle extends Shape {
     public double calcSurface() {
         return parA*parB;
     }
+
+    @Override
+    public String toString() {
+        return "My " + super.toString();
+    }
+
 }

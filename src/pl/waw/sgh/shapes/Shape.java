@@ -12,4 +12,12 @@ public class Shape {
         parA = a;
         parB = b;
     }
+
+    @Override
+    public String toString() {
+        return this.getClass().getSimpleName() + " [parA=" + parA + ", parB=" + parB + "]";
+                //+ super.toString();
+    }
+
+
 }

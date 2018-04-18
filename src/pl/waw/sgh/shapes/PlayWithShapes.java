@@ -7,5 +7,7 @@ public class PlayWithShapes {
         //Rectangle r1 = new Rectangle();
         //r1.setParams(4,5);
         System.out.println(r1.calcSurface());
+        // calls toString automatically
+        System.out.println(r1);
     }
 }
