@@ -15,6 +15,7 @@ public class CompareShapeCalculations {
         shapeList.add(s1);
         shapeList.add(s2);
         shapeList.add(s3);
+        shapeList.add(s2);
 
         for (ShapeCalculation s : shapeList) {
             System.out.println(s);
@@ -28,6 +29,13 @@ public class CompareShapeCalculations {
             System.out.println(s.toString());
             System.out.println(s.calcSurface());
         }
+        System.out.println();
+        System.out.println(shapeList);
+        shapeList.remove(s1);
+        shapeList.remove(1);
+
+        System.out.println();
+        System.out.println(shapeList);
 
 
     }
