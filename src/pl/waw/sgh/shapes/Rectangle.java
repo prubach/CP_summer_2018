@@ -1,6 +1,6 @@
 package pl.waw.sgh.shapes;
 
-public class Rectangle extends Shape implements PerimeterCalculation {
+public class Rectangle extends Shape {
 
     public Rectangle() {
         // call superclass (Shape) constructor
