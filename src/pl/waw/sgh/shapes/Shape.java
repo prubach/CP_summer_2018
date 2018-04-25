@@ -1,6 +1,6 @@
 package pl.waw.sgh.shapes;
 
-public abstract class Shape implements PerimeterCalculation {
+public abstract class Shape implements ShapeCalculation {
     protected Double parA = 0d;
     protected Double parB = 0d;
 

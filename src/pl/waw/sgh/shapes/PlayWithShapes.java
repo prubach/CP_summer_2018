@@ -21,20 +21,17 @@ public class PlayWithShapes {
         //System.out.println(s1);
         System.out.println();
 
-        Shape[] myShapes = new Shape[3];
+        ShapeCalculation[] myShapes = new ShapeCalculation[3];
         myShapes[0] = new Rectangle(3,4);
         myShapes[1] = new Circle(5);
         myShapes[2] = new Rectangle(6,7);
 
-        for (Shape s : myShapes) {
+        for (ShapeCalculation s : myShapes) {
             System.out.println(s.toString());
             // Avoid using instanceof and casting
             //if (s instanceof Rectangle)
             //    System.out.println("Surface: " + ((Rectangle)s).calcSurface() );
-//            if (s instanceof PerimeterCalculation) {
             System.out.println("Perimeter: " + s.calcPerimeter());
-  //          }
-
             System.out.println("Surface: " + s.calcSurface());
 
 
