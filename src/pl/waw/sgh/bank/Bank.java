@@ -35,8 +35,8 @@ public class Bank {
     @Override
     public String toString() {
         return "Bank{" +
-                "custList=" + custList +
-                ", accList=" + accList +
+                "cust=" + custList +
+                "\nacc=" + accList +
                 '}';
     }
 }
