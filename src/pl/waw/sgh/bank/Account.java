@@ -18,6 +18,14 @@ public abstract class Account {
         this.customer = customer;
     }
 
+    public void deposit(double amount) {
+        balance = balance.add(BigDecimal.valueOf(amount));
+    }
+
+    public void charge(double amount) {
+        balance = balance.subtract(BigDecimal.valueOf(amount));
+    }
+
     public Integer getAccountID() {
         return accountID;
     }
@@ -30,9 +38,9 @@ public abstract class Account {
         return balance;
     }
 
-    public void setBalance(BigDecimal balance) {
+/*    public void setBalance(BigDecimal balance) {
         this.balance = balance;
-    }
+    }*/
 
     public Customer getCustomer() {
         return customer;

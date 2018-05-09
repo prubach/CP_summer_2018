@@ -32,6 +32,17 @@ public class Bank {
         return account;
     }
 
+    public void transfer(Integer fromAccId, Integer toAccId, double amount) {
+
+
+    }
+
+    public Account findAccountById(Integer id) {
+        // iterate through the account list and return the account with a given id
+        return null;
+    }
+
+
     @Override
     public String toString() {
         return "Bank{" +

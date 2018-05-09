@@ -12,6 +12,8 @@ public class PlayWithBank {
         Account acc3 = bank.createAccount(c2, false);
         Account acc4 = bank.createAccount(c2, true);
 
+        acc1.deposit(100);
+
         System.out.println(bank);
 
     }
