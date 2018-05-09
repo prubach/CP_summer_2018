@@ -13,6 +13,7 @@ public class PlayWithBank {
         Account acc4 = bank.createAccount(c2, true);
 
         acc1.deposit(100);
+        bank.transfer(6,1,70);
 
         System.out.println(bank);
 

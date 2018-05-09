@@ -33,12 +33,20 @@ public class Bank {
     }
 
     public void transfer(Integer fromAccId, Integer toAccId, double amount) {
-
-
+        Account fromAcc = findAccountById(fromAccId);
+        Account toAcc = findAccountById(toAccId);
+        fromAcc.charge(amount);
+        toAcc.deposit(amount);
     }
 
-    public Account findAccountById(Integer id) {
+    public Account findAccountById(int id) {
         // iterate through the account list and return the account with a given id
+        for (Account acc : accList) {
+            //if (id.equals(acc.getAccountID()))
+            if (id==acc.getAccountID())
+                return acc;
+        }
+
         return null;
     }
 
