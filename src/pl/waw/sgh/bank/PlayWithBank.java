@@ -1,8 +1,10 @@
 package pl.waw.sgh.bank;
 
+import pl.waw.sgh.bank.exceptions.InvalidAmountException;
+
 public class PlayWithBank {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InvalidAmountException {
         Bank bank = new Bank();
         Customer c1 = bank.createCustomer("Anne","Brown","anne@brown.com");
         Customer c2 = bank.createCustomer("John","Smith","john@smith.com");
@@ -13,9 +15,15 @@ public class PlayWithBank {
         Account acc4 = bank.createAccount(c2, true);
 
         acc1.deposit(100);
-        bank.transfer(6,1,70);
 
-        System.out.println(bank);
+        try {
+            bank.transfer(0, 1, 170);
+            System.out.println(bank);
+        } catch (InvalidAmountException e) {
+            System.out.println(e.getMessage());
+        }
+
+
 
     }
 }
