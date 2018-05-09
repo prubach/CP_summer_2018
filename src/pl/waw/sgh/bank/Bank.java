@@ -1,5 +1,7 @@
 package pl.waw.sgh.bank;
 
+import pl.waw.sgh.bank.exceptions.InvalidAmountException;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +33,38 @@ public class Bank {
         accList.add(account);
         return account;
     }
+
+    public void transfer(Integer fromAccId, Integer toAccId, double amount) throws InvalidAmountException{
+        Account fromAcc = findAccountById(fromAccId);
+        Account toAcc = findAccountById(toAccId);
+        fromAcc.charge(amount);
+        toAcc.deposit(amount);
+    }
+/*
+
+    public void transfer(Integer fromAccId, Integer toAccId, double amount) {
+        Account fromAcc = findAccountById(fromAccId);
+        Account toAcc = findAccountById(toAccId);
+        int res = fromAcc.charge(amount);
+        if (res<0) {
+            System.out.println("Not enough money");
+            System.exit(res);
+        }
+        toAcc.deposit(amount);
+    }
+*/
+
+    public Account findAccountById(int id) {
+        // iterate through the account list and return the account with a given id
+        for (Account acc : accList) {
+            //if (id.equals(acc.getAccountID()))
+            if (id==acc.getAccountID())
+                return acc;
+        }
+
+        return null;
+    }
+
 
     @Override
     public String toString() {
