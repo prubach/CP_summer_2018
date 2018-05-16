@@ -1,6 +1,6 @@
 package pl.waw.sgh.bank.ui;
 
-import com.sun.java.swing.plaf.windows.WindowsLookAndFeel;
+//import com.sun.java.swing.plaf.windows.WindowsLookAndFeel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,7 +11,7 @@ public class FirstWindow {
     public static void main(String[] args) {
 
         try {
-            UIManager.setLookAndFeel(WindowsLookAndFeel.class.getName());
+            UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
         } catch (ClassNotFoundException
                 | InstantiationException
                 | IllegalAccessException

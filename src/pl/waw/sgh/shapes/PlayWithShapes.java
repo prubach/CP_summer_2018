@@ -1,7 +1,5 @@
 package pl.waw.sgh.shapes;
 
-import org.w3c.dom.css.Rect;
-
 public class PlayWithShapes {
 
     public static void main(String[] args) {
