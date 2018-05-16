@@ -25,6 +25,12 @@ public class Bank {
         return customer;
     }
 
+    public void deleteCustomer(Integer custId) {
+        Customer custToDel = findCustomerById(custId);
+        //TODO First find all accounts that belong to that customer and delete them
+        custList.remove(custToDel);
+    }
+
     public Account createAccount(Customer customer, boolean isSavings) {
         Account account = (isSavings ?
                             new SavingsAccount(lastAccID++, new BigDecimal(0), customer)
@@ -65,6 +71,14 @@ public class Bank {
         }
         throw new NonExistantAccountException("Account id: " + id + " does not exist!");
         //return null;
+    }
+
+    public Customer findCustomerById(int id) {
+        for (Customer cust : custList) {
+            if (id==cust.getCustomerID())
+                return cust;
+        }
+        return null;
     }
 
 

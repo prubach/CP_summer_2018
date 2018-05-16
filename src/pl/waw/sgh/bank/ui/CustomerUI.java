@@ -1,5 +1,6 @@
 package pl.waw.sgh.bank.ui;
 
+import org.omg.CORBA.CustomMarshal;
 import pl.waw.sgh.bank.Bank;
 import pl.waw.sgh.bank.Customer;
 
@@ -22,15 +23,26 @@ public class CustomerUI {
 
     private Bank bank = new Bank();
 
+    private Customer curCust;
+
     public CustomerUI() {
         $$$setupUI$$$();
         newButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                Customer newCust = bank.createCustomer("", "", "");
-                idTextField.setText(newCust.getCustomerID().toString());
+                curCust = bank.createCustomer("", "", "");
+                idTextField.setText(curCust.getCustomerID().toString());
             }
         });
+        saveButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                JOptionPane.showMessageDialog(null, bank);
+            }
+        });
+        // deleteButton.addActionListener();
+        // prevButton
+        // nextButton
     }
 
     public static void main(String[] args) {
