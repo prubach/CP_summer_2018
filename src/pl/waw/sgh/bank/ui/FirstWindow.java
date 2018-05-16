@@ -1,5 +1,7 @@
 package pl.waw.sgh.bank.ui;
 
+import com.sun.java.swing.plaf.windows.WindowsLookAndFeel;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -7,6 +9,16 @@ import java.awt.event.ActionListener;
 
 public class FirstWindow {
     public static void main(String[] args) {
+
+        try {
+            UIManager.setLookAndFeel(WindowsLookAndFeel.class.getName());
+        } catch (ClassNotFoundException
+                | InstantiationException
+                | IllegalAccessException
+                | UnsupportedLookAndFeelException e) {
+            e.printStackTrace();
+        }
+
         JFrame myFrame = new JFrame("My Window");
         myFrame.setSize(400,600);
         myFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
