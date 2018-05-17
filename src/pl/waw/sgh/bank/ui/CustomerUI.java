@@ -1,6 +1,10 @@
 package pl.waw.sgh.bank.ui;
 
-import org.omg.CORBA.CustomMarshal;
+//NOTE, AS FOR 17.05 I HAVE ERROR:
+//Error:(3, 15) java: package org.omg.CORBA is not visible
+//      (package org.omg.CORBA is declared in module java.corba, which is not in the module graph)
+
+//import org.omg.CORBA.CustomMarshal;
 import pl.waw.sgh.bank.Bank;
 import pl.waw.sgh.bank.Customer;
 
