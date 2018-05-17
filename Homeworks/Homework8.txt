@@ -1,0 +1,5 @@
+Please implement the functionality of buttons in the CustomerUI form:
+1. Save Button - the data should be read from the textfields and saved to the curCust
+2. Delete Button
+3. Prev Button - navigate to the previous Customer in the Customer List of the bank
+4. Next Button - navigate to the next Customer in the Customer List of the bank
