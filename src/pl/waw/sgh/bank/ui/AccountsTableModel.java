@@ -64,9 +64,23 @@ public class AccountsTableModel extends DefaultTableModel {
         }
     }
 
+    @Override
+    public boolean isCellEditable(int row, int col) {
+        if (col==0 || col==1) return false;
+        return true;
+    }
 
-
-
-
-
+    @Override
+    public void setValueAt(Object newVal, int row, int col) {
+        super.setValueAt(newVal, row, col);
+        Account acc = accountList.get(row);
+        switch (col) {
+            case 2:
+                acc.setCurrency(newVal.toString());
+                return;
+            case 3:
+                acc.setBalance((BigDecimal)newVal);
+                return;
+        }
+    }
 }
