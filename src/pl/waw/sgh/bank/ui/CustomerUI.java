@@ -3,6 +3,7 @@ package pl.waw.sgh.bank.ui;
 import pl.waw.sgh.bank.Account;
 import pl.waw.sgh.bank.Bank;
 import pl.waw.sgh.bank.Customer;
+import pl.waw.sgh.bank.exceptions.NonExistantAccountException;
 
 import javax.swing.*;
 import java.awt.*;
@@ -159,6 +160,22 @@ public class CustomerUI {
         });
 
         JMenuItem deleteAccount = new JMenuItem("Delete Account");
+        deleteAccount.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                int[] accRowsToDel = accTable.getSelectedRows();
+                for (int selInd : accRowsToDel) {
+                    Account accToDel = accountsTableModel.getAccountByRow(selInd);
+                    try {
+                        bank.deleteAccount(accToDel.getAccountID());
+                    } catch (NonExistantAccountException e) {
+                        JOptionPane.showMessageDialog(null, "Account to be deleted not found: " + selInd);
+                    }
+                }
+                accountsTableModel.removeAllRows();
+                accountsTableModel.addRows(bank.findAccountsByCustomer(curCust));
+            }
+        });
         contextMenu.add(newDebitAccount);
         contextMenu.add(newSavingsAccount);
         contextMenu.add(deleteAccount);

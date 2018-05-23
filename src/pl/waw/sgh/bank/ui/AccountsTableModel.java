@@ -26,6 +26,10 @@ public class AccountsTableModel extends DefaultTableModel {
         fireTableDataChanged();
     }
 
+    public Account getAccountByRow(int row) {
+        return accountList.get(row);
+    }
+
     public void addRows(List<Account> accList) {
         for (Account acc : accList) {
             addRow(acc);
