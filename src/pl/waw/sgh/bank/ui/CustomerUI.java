@@ -72,8 +72,7 @@ public class CustomerUI {
                     } else {
                         tempId = 0;
                     }
-                    JOptionPane.showMessageDialog(customerMainPanel, bank.findCustomerById(tempId));
-                    idTextField.setText(Integer.toString(tempId));
+                    displayCustomer(tempId);
                 } else {
                     JOptionPane.showMessageDialog(customerMainPanel, bank.getCustList().get(0));
                     idTextField.setText("1");
@@ -92,8 +91,9 @@ public class CustomerUI {
                     } else {
                         tempId = (tempCust.getCustomerID());
                     }
-                    JOptionPane.showMessageDialog(customerMainPanel, bank.findCustomerById(tempId));
-                    idTextField.setText(Integer.toString(tempId));
+                    displayCustomer(tempId);
+                    //JOptionPane.showMessageDialog(customerMainPanel, bank.findCustomerById(tempId));
+                    //idTextField.setText(Integer.toString(tempId));
                 } else {
                     JOptionPane.showMessageDialog(customerMainPanel, bank.getCustList().get(tempCust.getCustomerID()));
                     idTextField.setText(Integer.toString(tempCust.getCustomerID()));
@@ -106,6 +106,15 @@ public class CustomerUI {
         // deleteButton.addActionListener();
         // prevButton
         // nextButton
+    }
+
+    public void displayCustomer(Integer custId) {
+        Customer cust = bank.findCustomerById(custId);
+        //JOptionPane.showMessageDialog(customerMainPanel, bank.findCustomerById(tempId));
+        idTextField.setText(Integer.toString(custId));
+        firstNameTextField.setText(cust.getFirstName());
+        lastNameTextField.setText(cust.getLastName());
+        emailTextField.setText(cust.getEmail());
     }
 
     public static void main(String[] args) {
