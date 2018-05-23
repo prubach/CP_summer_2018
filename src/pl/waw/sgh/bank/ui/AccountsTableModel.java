@@ -20,6 +20,12 @@ public class AccountsTableModel extends DefaultTableModel {
         addRows(accList);
     }
 
+    public void removeAllRows() {
+        dataVector.clear();
+        accountList.clear();
+        fireTableDataChanged();
+    }
+
     public void addRows(List<Account> accList) {
         for (Account acc : accList) {
             addRow(acc);

@@ -65,6 +65,7 @@ public class CustomerUI {
                 Integer custId = Integer.parseInt(idTextField.getText());
                 JOptionPane.showConfirmDialog(customerMainPanel, "Are you sure you want to delete customer: " + bank.findCustomerById(custId) + "?");
                 bank.deleteCustomerAndHisHersAccounts(custId);
+                displayCustomer(bank.getCustList().get(0).getCustomerID());
             }
         });
         nextButton.addActionListener(new ActionListener() {
@@ -72,13 +73,14 @@ public class CustomerUI {
             public void actionPerformed(ActionEvent e) {
                 if (!idTextField.getText().equals("")) {
                     Integer custId = Integer.parseInt(idTextField.getText());
-                    int tempId;
-                    if (custId < bank.getCustList().size() - 1) {
-                        tempId = custId + 1;
+                    Customer cust = bank.findCustomerById(custId);
+                    int tempId = bank.getCustList().indexOf(cust);
+                    if (tempId < bank.getCustList().size() - 1) {
+                        tempId++;
                     } else {
                         tempId = 0;
                     }
-                    displayCustomer(tempId);
+                    displayCustomer(bank.getCustList().get(tempId).getCustomerID());
                 } else {
                     JOptionPane.showMessageDialog(customerMainPanel, bank.getCustList().get(0));
                     idTextField.setText("1");
@@ -91,13 +93,14 @@ public class CustomerUI {
                 Customer tempCust = (bank.getCustList().get(bank.getCustList().size() - 1));
                 if (!idTextField.getText().equals("")) {
                     Integer custId = Integer.parseInt(idTextField.getText());
-                    int tempId;
-                    if (!custId.equals(0)) {
-                        tempId = custId - 1;
+                    Customer cust = bank.findCustomerById(custId);
+                    int tempId = bank.getCustList().indexOf(cust);
+                    if (tempId!=0) {
+                        tempId--;
                     } else {
-                        tempId = (tempCust.getCustomerID());
+                        tempId = 0;
                     }
-                    displayCustomer(tempId);
+                    displayCustomer(bank.getCustList().get(tempId).getCustomerID());
                     //JOptionPane.showMessageDialog(customerMainPanel, bank.findCustomerById(tempId));
                     //idTextField.setText(Integer.toString(tempId));
                 } else {
@@ -119,6 +122,9 @@ public class CustomerUI {
         firstNameTextField.setText(curCust.getFirstName());
         lastNameTextField.setText(curCust.getLastName());
         emailTextField.setText(curCust.getEmail());
+        // Clear the table and then load exiting accounts
+        accountsTableModel.removeAllRows();
+        accountsTableModel.addRows(bank.findAccountsByCustomer(curCust));
     }
 
     public static void main(String[] args) {
