@@ -21,6 +21,18 @@ public class Bank {
         return accList;
     }
 
+    public List<Customer> getCustList() {
+        return custList;
+    }
+
+    public Integer getLastAccID() {
+        return lastAccID;
+    }
+
+    public Integer getLastCustID() {
+        return lastCustID;
+    }
+
     public Customer createCustomer(String firstName,
                                    String lastName,
                                    String email) {
@@ -34,6 +46,25 @@ public class Bank {
         //TODO First find all accounts that belong to that customer and delete them
         custList.remove(custToDel);
     }
+
+    public void deleteAccount(Integer accId) throws NonExistantAccountException {
+        Account acc = findAccountById(accId);
+        accList.remove(acc);
+    }
+
+    public void deleteCustomerAndHisHersAccounts(Integer custId) {
+        Customer cust = findCustomerById(custId);
+        List<Account> custAccs = findAccountsByCustomer(cust);
+        for (Account acc : custAccs) {
+            try {
+                deleteAccount(acc.getAccountID());
+            } catch (NonExistantAccountException ne) {
+                System.out.println(ne.getMessage());
+            }
+        }
+        deleteCustomer(custId);
+    }
+
 
     public Account createAccount(Customer customer, boolean isSavings) {
         Account account = (isSavings ?
@@ -74,6 +105,19 @@ public class Bank {
                 return acc;
         }
         throw new NonExistantAccountException("Account id: " + id + " does not exist!");
+        //return null;
+    }
+
+    public List<Account> findAccountsByCustomer(Customer customer) {
+
+        List<Account> custAccs = new ArrayList<>();
+        // iterate through the account list and return the account with a given id
+        for (Account acc : accList) {
+            //if (id.equals(acc.getAccountID()))
+            if (acc.getCustomer().equals(customer))
+                custAccs.add(acc);
+        }
+        return custAccs;
         //return null;
     }
 

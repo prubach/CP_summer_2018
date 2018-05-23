@@ -1,6 +1,5 @@
 package pl.waw.sgh.bank.ui;
 
-import org.omg.CORBA.CustomMarshal;
 import pl.waw.sgh.bank.Bank;
 import pl.waw.sgh.bank.Customer;
 
@@ -13,7 +12,7 @@ public class CustomerUI {
     private JTextField idTextField;
     private JTextField firstNameTextField;
     private JTextField lastNameTextField;
-    private JTextField textField1;
+    private JTextField emailTextField;
     private JButton prevButton;
     private JButton deleteButton;
     private JButton saveButton;
@@ -30,19 +29,80 @@ public class CustomerUI {
 
     public CustomerUI() {
         $$$setupUI$$$();
-        newButton.addActionListener(new ActionListener() {
+        newButton.addActionListener(new ActionListener() {              //this newbutton clears fields and sets a new id
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                curCust = bank.createCustomer("", "", "");
-                idTextField.setText(curCust.getCustomerID().toString());
+                firstNameTextField.setText("");
+                lastNameTextField.setText("");
+                emailTextField.setText("");
+                idTextField.setText(new Integer(bank.getLastCustID() - 1).toString());
             }
         });
         saveButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                JOptionPane.showMessageDialog(null, bank);
+            public void actionPerformed(ActionEvent e) {
+                String fn = firstNameTextField.getText();
+                String ln = lastNameTextField.getText();
+                String em = emailTextField.getText();
+                if (!fn.equals("") & !ln.equals("") & !em.equals("")) {
+                    bank.createCustomer(fn, ln, em);
+                    JOptionPane.showMessageDialog(null, bank);
+                }
+                if (fn.equals("") & ln.equals("") & em.equals("")) {
+                    JOptionPane.showMessageDialog(customerMainPanel, "Missing data.");
+                }
             }
         });
+        deleteButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Integer custId = Integer.parseInt(idTextField.getText());
+                JOptionPane.showConfirmDialog(customerMainPanel, "Are you sure you want to delete customer: " + bank.findCustomerById(custId) + "?");
+                bank.deleteCustomerAndHisHersAccounts(custId);
+            }
+        });
+        nextButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (!idTextField.getText().equals("")) {
+                    Integer custId = Integer.parseInt(idTextField.getText());
+                    int tempId;
+                    if (custId < bank.getCustList().size() - 1) {
+                        tempId = custId + 1;
+                    } else {
+                        tempId = 0;
+                    }
+                    JOptionPane.showMessageDialog(customerMainPanel, bank.findCustomerById(tempId));
+                    idTextField.setText(Integer.toString(tempId));
+                } else {
+                    JOptionPane.showMessageDialog(customerMainPanel, bank.getCustList().get(0));
+                    idTextField.setText("1");
+                }
+            }
+        });
+        prevButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Customer tempCust = (bank.getCustList().get(bank.getCustList().size() - 1));
+                if (!idTextField.getText().equals("")) {
+                    Integer custId = Integer.parseInt(idTextField.getText());
+                    int tempId;
+                    if (!custId.equals(0)) {
+                        tempId = custId - 1;
+                    } else {
+                        tempId = (tempCust.getCustomerID());
+                    }
+                    JOptionPane.showMessageDialog(customerMainPanel, bank.findCustomerById(tempId));
+                    idTextField.setText(Integer.toString(tempId));
+                } else {
+                    JOptionPane.showMessageDialog(customerMainPanel, bank.getCustList().get(tempCust.getCustomerID()));
+                    idTextField.setText(Integer.toString(tempCust.getCustomerID()));
+                }
+            }
+        });
+
+
+
         // deleteButton.addActionListener();
         // prevButton
         // nextButton
@@ -97,8 +157,8 @@ public class CustomerUI {
         final JLabel label4 = new JLabel();
         label4.setText("Email");
         panel1.add(label4, new com.intellij.uiDesigner.core.GridConstraints(3, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        textField1 = new JTextField();
-        panel1.add(textField1, new com.intellij.uiDesigner.core.GridConstraints(3, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+        emailTextField = new JTextField();
+        panel1.add(emailTextField, new com.intellij.uiDesigner.core.GridConstraints(3, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
         final com.intellij.uiDesigner.core.Spacer spacer1 = new com.intellij.uiDesigner.core.Spacer();
         customerMainPanel.add(spacer1, new com.intellij.uiDesigner.core.GridConstraints(0, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
         final JPanel panel2 = new JPanel();
