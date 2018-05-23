@@ -61,7 +61,7 @@ public class CustomerUI {
         // TODO: place custom component creation code here
         Customer cl = bank.createCustomer("John","Smith", "email");
         bank.createAccount(cl, false);
-
+        System.out.println(bank);
         accountsTableModel = new AccountsTableModel(bank.getAccList());
         accTable = new JTable(accountsTableModel);
     }
@@ -74,7 +74,6 @@ public class CustomerUI {
      * @noinspection ALL
      */
     private void $$$setupUI$$$() {
-        createUIComponents();
         customerMainPanel = new JPanel();
         customerMainPanel.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(2, 2, new Insets(0, 0, 0, 0), -1, -1));
         final JPanel panel1 = new JPanel();
