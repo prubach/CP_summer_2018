@@ -4,15 +4,14 @@ public class PlayWithTriangle {
 
     public static void main(String[] args) {
 
-        NormalTriangle nt1 = new NormalTriangle(3,4, 5);
-        System.out.println(nt1);
-        System.out.println(nt1.calcSurface());
+        AbstractTriangle[] myTriangles = new AbstractTriangle[3];
+        myTriangles[0] = new ScaleneTriangle(3, 4, 5);
+        myTriangles[1] = new IsoscelesTriangle(3, 4, 4);
+        myTriangles[2] = new EquilateralTriangle(3, 3, 3);
 
-        System.out.println();
-
-        EquilateralTriangle et1 = new EquilateralTriangle(10);
-        System.out.println(et1);
-        System.out.println(et1.calcSurface());
-
+        for (AbstractTriangle t : myTriangles) {
+            System.out.println(t.toString());
+            System.out.println("Surface: " + t.calcSurface());
+        }
     }
 }

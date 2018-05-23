@@ -7,7 +7,7 @@ package pl.waw.sgh.Homework5AbstractTriangles;
 //- Isosceles Triangle
 //- Scalene Triangle
 //(https://www.mathsisfun.com/triangle.html)
-//3. Add implmentation of calcSurface for all triangles.
+//3. Add implementation of calcSurface for all triangles.
 //Note, you can put the common part of the implementation in the AbstractTriangle.
 
 //Notes about abstracts:
@@ -17,33 +17,23 @@ package pl.waw.sgh.Homework5AbstractTriangles;
 //https://www.tutorialspoint.com/java/java_abstraction.htm
 
 public abstract class AbstractTriangle {
-
     protected Double parA = 0d;
     protected Double parB = 0d;
     protected Double parC = 0d;
 
-    public AbstractTriangle (double a, double b, double c) {
-        setTParams(a, b, c);
+    public AbstractTriangle (double a, double b, double c) { //constructor of scalene traingle
+        set3Params(a, b, c);
     }
 
-    public AbstractTriangle (double a) {
-        setTEParams(a);
-    }
-
-
-    public void setTParams(double a, double b, double c) {
+    public void set3Params(double a, double b, double c) {
         parA = a;
         parB = b;
         parC = c;
     }
 
-    public void setTEParams(double a) {
-        parA = a;
-        parB = a;
-        parC = a;
+    //https://www.wikihow.com/Calculate-the-Area-of-a-Triangle
+    public double calcSurface() {
+        double p = (parA+parB+parC)/2;
+        return Math.sqrt(p*(p-parA)*(p-parB)*(p-parC));
     }
-
-    public abstract double calcSurface();
-
-
 }
