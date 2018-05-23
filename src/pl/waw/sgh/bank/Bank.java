@@ -17,6 +17,10 @@ public class Bank {
 
     private Integer lastAccID = 0;
 
+    public List<Account> getAccList() {
+        return accList;
+    }
+
     public Customer createCustomer(String firstName,
                                    String lastName,
                                    String email) {

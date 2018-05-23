@@ -20,6 +20,9 @@ public class CustomerUI {
     private JButton newButton;
     private JButton nextButton;
     private JPanel customerMainPanel;
+    private JTable accTable;
+
+    private AccountsTableModel accountsTableModel;
 
     private Bank bank = new Bank();
 
@@ -56,7 +59,11 @@ public class CustomerUI {
 
     private void createUIComponents() {
         // TODO: place custom component creation code here
+        Customer cl = bank.createCustomer("John","Smith", "email");
+        bank.createAccount(cl, false);
 
+        accountsTableModel = new AccountsTableModel(bank.getAccList());
+        accTable = new JTable(accountsTableModel);
     }
 
     /**
@@ -67,6 +74,7 @@ public class CustomerUI {
      * @noinspection ALL
      */
     private void $$$setupUI$$$() {
+        createUIComponents();
         customerMainPanel = new JPanel();
         customerMainPanel.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(2, 2, new Insets(0, 0, 0, 0), -1, -1));
         final JPanel panel1 = new JPanel();
