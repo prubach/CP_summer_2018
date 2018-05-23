@@ -155,12 +155,18 @@ public class CustomerUI {
 
         @Override
         public void mousePressed(MouseEvent e) {
-
+            // Is this a right click
+            System.out.println(e);
+            if (e.isPopupTrigger()) {
+                // Show Context Menu
+                contextMenu.show(e.getComponent(),e.getX(),e.getY());
+            }
         }
 
         @Override
         public void mouseReleased(MouseEvent e) {
             // Is this a right click
+            System.out.println(e);
             if (e.isPopupTrigger()) {
                 // Show Context Menu
                 contextMenu.show(e.getComponent(),e.getX(),e.getY());
