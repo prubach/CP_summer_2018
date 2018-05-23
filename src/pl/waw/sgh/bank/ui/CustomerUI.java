@@ -1,5 +1,6 @@
 package pl.waw.sgh.bank.ui;
 
+import pl.waw.sgh.bank.Account;
 import pl.waw.sgh.bank.Bank;
 import pl.waw.sgh.bank.Customer;
 
@@ -36,10 +37,8 @@ public class CustomerUI {
         newButton.addActionListener(new ActionListener() {              //this newbutton clears fields and sets a new id
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                firstNameTextField.setText("");
-                lastNameTextField.setText("");
-                emailTextField.setText("");
-                idTextField.setText(new Integer(bank.getLastCustID() - 1).toString());
+                curCust = bank.createCustomer("","","");
+                displayCustomer(curCust.getCustomerID());
             }
         });
         saveButton.addActionListener(new ActionListener() {
@@ -49,7 +48,10 @@ public class CustomerUI {
                 String ln = lastNameTextField.getText();
                 String em = emailTextField.getText();
                 if (!fn.equals("") & !ln.equals("") & !em.equals("")) {
-                    bank.createCustomer(fn, ln, em);
+                    curCust.setFirstName(fn);
+                    curCust.setLastName(ln);
+                    curCust.setEmail(em);
+                    //curCust = bank.createCustomer(fn, ln, em);
                     JOptionPane.showMessageDialog(null, bank);
                 }
                 if (fn.equals("") & ln.equals("") & em.equals("")) {
@@ -111,12 +113,12 @@ public class CustomerUI {
     }
 
     public void displayCustomer(Integer custId) {
-        Customer cust = bank.findCustomerById(custId);
+        curCust = bank.findCustomerById(custId);
         //JOptionPane.showMessageDialog(customerMainPanel, bank.findCustomerById(tempId));
         idTextField.setText(Integer.toString(custId));
-        firstNameTextField.setText(cust.getFirstName());
-        lastNameTextField.setText(cust.getLastName());
-        emailTextField.setText(cust.getEmail());
+        firstNameTextField.setText(curCust.getFirstName());
+        lastNameTextField.setText(curCust.getLastName());
+        emailTextField.setText(curCust.getEmail());
     }
 
     public static void main(String[] args) {
@@ -130,14 +132,26 @@ public class CustomerUI {
 
     private void createUIComponents() {
         // TODO: place custom component creation code here
-        Customer cl = bank.createCustomer("John","Smith", "email");
-        bank.createAccount(cl, false);
-        System.out.println(bank);
         accountsTableModel = new AccountsTableModel(bank.getAccList());
         accTable = new JTable(accountsTableModel);
 
         JMenuItem newDebitAccount = new JMenuItem("New Debit Account");
+        newDebitAccount.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                Account newAccount = bank.createAccount(curCust, false);
+                accountsTableModel.addRow(newAccount);
+            }
+        });
         JMenuItem newSavingsAccount = new JMenuItem("New Savings Account");
+        newSavingsAccount.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                Account newAccount = bank.createAccount(curCust, true);
+                accountsTableModel.addRow(newAccount);
+            }
+        });
+
         JMenuItem deleteAccount = new JMenuItem("Delete Account");
         contextMenu.add(newDebitAccount);
         contextMenu.add(newSavingsAccount);
@@ -156,7 +170,6 @@ public class CustomerUI {
         @Override
         public void mousePressed(MouseEvent e) {
             // Is this a right click
-            System.out.println(e);
             if (e.isPopupTrigger()) {
                 // Show Context Menu
                 contextMenu.show(e.getComponent(),e.getX(),e.getY());
@@ -166,7 +179,6 @@ public class CustomerUI {
         @Override
         public void mouseReleased(MouseEvent e) {
             // Is this a right click
-            System.out.println(e);
             if (e.isPopupTrigger()) {
                 // Show Context Menu
                 contextMenu.show(e.getComponent(),e.getX(),e.getY());
