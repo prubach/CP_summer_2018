@@ -1,52 +1,131 @@
 package pl.waw.sgh.bank.ui;
 
-//NOTE, AS FOR 17.05 I HAVE ERROR:
-//Error:(3, 15) java: package org.omg.CORBA is not visible
-//      (package org.omg.CORBA is declared in module java.corba, which is not in the module graph)
-
-//import org.omg.CORBA.CustomMarshal;
+import pl.waw.sgh.bank.Account;
 import pl.waw.sgh.bank.Bank;
 import pl.waw.sgh.bank.Customer;
+import pl.waw.sgh.bank.exceptions.NonExistantAccountException;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 public class CustomerUI {
     private JTextField idTextField;
     private JTextField firstNameTextField;
     private JTextField lastNameTextField;
-    private JTextField textField1;
+    private JTextField emailTextField;
     private JButton prevButton;
     private JButton deleteButton;
     private JButton saveButton;
     private JButton newButton;
     private JButton nextButton;
     private JPanel customerMainPanel;
+    private JTable accTable;
+
+    private AccountsTableModel accountsTableModel;
 
     private Bank bank = new Bank();
+
+    private JPopupMenu contextMenu = new JPopupMenu("Operations on Account");
 
     private Customer curCust;
 
     public CustomerUI() {
         $$$setupUI$$$();
-        newButton.addActionListener(new ActionListener() {
+        newButton.addActionListener(new ActionListener() {              //this newbutton clears fields and sets a new id
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                curCust = bank.createCustomer("", "", "");
-                idTextField.setText(curCust.getCustomerID().toString());
+                curCust = bank.createCustomer("","","");
+                displayCustomer(curCust.getCustomerID());
             }
         });
         saveButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                JOptionPane.showMessageDialog(null, bank);
+            public void actionPerformed(ActionEvent e) {
+                String fn = firstNameTextField.getText();
+                String ln = lastNameTextField.getText();
+                String em = emailTextField.getText();
+                if (!fn.equals("") & !ln.equals("") & !em.equals("")) {
+                    curCust.setFirstName(fn);
+                    curCust.setLastName(ln);
+                    curCust.setEmail(em);
+                    //curCust = bank.createCustomer(fn, ln, em);
+                    JOptionPane.showMessageDialog(null, bank);
+                }
+                if (fn.equals("") & ln.equals("") & em.equals("")) {
+                    JOptionPane.showMessageDialog(customerMainPanel, "Missing data.");
+                }
             }
         });
+        deleteButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Integer custId = Integer.parseInt(idTextField.getText());
+                JOptionPane.showConfirmDialog(customerMainPanel, "Are you sure you want to delete customer: " + bank.findCustomerById(custId) + "?");
+                bank.deleteCustomerAndHisHersAccounts(custId);
+                displayCustomer(bank.getCustList().get(0).getCustomerID());
+            }
+        });
+        nextButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (!idTextField.getText().equals("")) {
+                    Integer custId = Integer.parseInt(idTextField.getText());
+                    Customer cust = bank.findCustomerById(custId);
+                    int tempId = bank.getCustList().indexOf(cust);
+                    if (tempId < bank.getCustList().size() - 1) {
+                        tempId++;
+                    } else {
+                        tempId = 0;
+                    }
+                    displayCustomer(bank.getCustList().get(tempId).getCustomerID());
+                } else {
+                    JOptionPane.showMessageDialog(customerMainPanel, bank.getCustList().get(0));
+                    idTextField.setText("1");
+                }
+            }
+        });
+        prevButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Customer tempCust = (bank.getCustList().get(bank.getCustList().size() - 1));
+                if (!idTextField.getText().equals("")) {
+                    Integer custId = Integer.parseInt(idTextField.getText());
+                    Customer cust = bank.findCustomerById(custId);
+                    int tempId = bank.getCustList().indexOf(cust);
+                    if (tempId!=0) {
+                        tempId--;
+                    } else {
+                        tempId = 0;
+                    }
+                    displayCustomer(bank.getCustList().get(tempId).getCustomerID());
+                    //JOptionPane.showMessageDialog(customerMainPanel, bank.findCustomerById(tempId));
+                    //idTextField.setText(Integer.toString(tempId));
+                } else {
+                    JOptionPane.showMessageDialog(customerMainPanel, bank.getCustList().get(tempCust.getCustomerID()));
+                    idTextField.setText(Integer.toString(tempCust.getCustomerID()));
+                }
+            }
+        });
+
         // deleteButton.addActionListener();
         // prevButton
         // nextButton
+    }
+
+    public void displayCustomer(Integer custId) {
+        curCust = bank.findCustomerById(custId);
+        //JOptionPane.showMessageDialog(customerMainPanel, bank.findCustomerById(tempId));
+        idTextField.setText(Integer.toString(custId));
+        firstNameTextField.setText(curCust.getFirstName());
+        lastNameTextField.setText(curCust.getLastName());
+        emailTextField.setText(curCust.getEmail());
+        // Clear the table and then load exiting accounts
+        accountsTableModel.removeAllRows();
+        accountsTableModel.addRows(bank.findAccountsByCustomer(curCust));
     }
 
     public static void main(String[] args) {
@@ -60,8 +139,88 @@ public class CustomerUI {
 
     private void createUIComponents() {
         // TODO: place custom component creation code here
+        accountsTableModel = new AccountsTableModel(bank.getAccList());
+        accTable = new JTable(accountsTableModel);
+
+        JMenuItem newDebitAccount = new JMenuItem("New Debit Account");
+        newDebitAccount.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                Account newAccount = bank.createAccount(curCust, false);
+                accountsTableModel.addRow(newAccount);
+            }
+        });
+        JMenuItem newSavingsAccount = new JMenuItem("New Savings Account");
+        newSavingsAccount.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                Account newAccount = bank.createAccount(curCust, true);
+                accountsTableModel.addRow(newAccount);
+            }
+        });
+
+        JMenuItem deleteAccount = new JMenuItem("Delete Account");
+        deleteAccount.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                int[] accRowsToDel = accTable.getSelectedRows();
+                for (int selInd : accRowsToDel) {
+                    Account accToDel = accountsTableModel.getAccountByRow(selInd);
+                    try {
+                        bank.deleteAccount(accToDel.getAccountID());
+                    } catch (NonExistantAccountException e) {
+                        JOptionPane.showMessageDialog(null, "Account to be deleted not found: " + selInd);
+                    }
+                }
+                accountsTableModel.removeAllRows();
+                accountsTableModel.addRows(bank.findAccountsByCustomer(curCust));
+            }
+        });
+        contextMenu.add(newDebitAccount);
+        contextMenu.add(newSavingsAccount);
+        contextMenu.add(deleteAccount);
+        accTable.addMouseListener(new AccountsTableMouseListener());
 
     }
+
+    private class AccountsTableMouseListener implements MouseListener {
+
+        @Override
+        public void mouseClicked(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+            // Is this a right click
+            if (e.isPopupTrigger()) {
+                // Show Context Menu
+                contextMenu.show(e.getComponent(),e.getX(),e.getY());
+            }
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+            // Is this a right click
+            if (e.isPopupTrigger()) {
+                // Show Context Menu
+                contextMenu.show(e.getComponent(),e.getX(),e.getY());
+            }
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+
+        }
+    }
+
+
+
 
     /**
      * Method generated by IntelliJ IDEA GUI Designer
@@ -94,8 +253,8 @@ public class CustomerUI {
         final JLabel label4 = new JLabel();
         label4.setText("Email");
         panel1.add(label4, new com.intellij.uiDesigner.core.GridConstraints(3, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        textField1 = new JTextField();
-        panel1.add(textField1, new com.intellij.uiDesigner.core.GridConstraints(3, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+        emailTextField = new JTextField();
+        panel1.add(emailTextField, new com.intellij.uiDesigner.core.GridConstraints(3, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
         final com.intellij.uiDesigner.core.Spacer spacer1 = new com.intellij.uiDesigner.core.Spacer();
         customerMainPanel.add(spacer1, new com.intellij.uiDesigner.core.GridConstraints(0, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
         final JPanel panel2 = new JPanel();
