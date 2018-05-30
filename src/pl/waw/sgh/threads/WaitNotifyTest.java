@@ -6,7 +6,11 @@ public class WaitNotifyTest {
         Message msg = new Message("Process it");
         Waiter waiter1 = new Waiter(msg);
         Waiter waiter2 = new Waiter(msg);
+
+        //waiter1.run();
         new Thread(waiter1, "waiter1").start();
+        //waiter2.run();
+
         new Thread(waiter2, "waiter2").start();
 
         Notifier notifier = new Notifier(msg);
