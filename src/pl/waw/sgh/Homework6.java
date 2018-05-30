@@ -39,7 +39,7 @@ public class Homework6 {
 
         for (File file : listOfFiles) {
             if (file.isFile()) {
-                System.out.println("File " + file.getName());
+                System.out.println("File updated: " + file.getName());
                 try {
                     copyAndImproveFile(file);
                 }catch (FileNotFoundException e){
